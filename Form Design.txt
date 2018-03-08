@@ -1,0 +1,105 @@
+import React from 'react';
+class App extends React.Component
+{
+constructor()
+{
+super();
+this.state={
+fields: {},
+errors: {}
+}}
+
+handleValidation()
+{
+var fields=this.state.fields;
+var errors ={};
+var formIsValid=true;
+//name
+if(!fields["name"])
+{
+formIsValid=false;
+errors["name"]="Name cannot be Empty";
+}
+
+if(typeof fields["name"]!=="undefined")
+{
+if(!fields["name"].match(/^[a-zA-Z]+$/))
+{
+formIsValid =false;
+errors["name"] = "Enter Only Letters";
+}
+}
+
+//email
+if(!fields["email"])
+{
+formIsValid=false;
+errors["email"]="email cannot be Empty";
+}
+
+//phoneno
+if(!fields["phoneno"])
+{
+formIsValid=false;
+errors["phoneno"]="phoneno cannot be Empty";
+}
+
+if(typeof fields["phoneno"]!=="undefined")
+{
+if(!fields["phoneno"].match(/^[[7-9]{1}[0-9]{9}]+$/))
+{
+formIsValid =false;
+errors["phoneno"] = "It is not a valid phone no";
+}
+}
+
+this.setState({errors: errors});
+return formIsValid;
+}
+
+formSubmit(e)
+{
+e.preventDefault();
+if(this.handleValidation())
+{
+alert("form submitted");
+}
+else
+{
+alert("form has error");
+}
+}
+handleChanges(field,e)
+{
+let fields=this.state.fields;
+fields[field]=e.target.value;
+this.setState({fields});
+}
+
+render()
+{
+return(
+<div>
+<form name="myform" className="myform" onSubmit={this.formSubmit.bind(this)}>
+<div className="col-md-6">
+<fieldset>
+<input type="text" size="30" placeholder="enter name" onChange={this.handleChanges.bind(this,"name")} value={this.state.fields["name"]}/>
+<span style={{color:"red"}}>{this.state.errors["name"]}</span>
+<br/>
+<input type="email" size="30" placeholder="enter email" onChange={this.handleChanges.bind(this,"email")}
+value={this.state.fields["email"]}/>
+<span style={{color:"red"}}>{this.state.errors["email"]}</span>
+<br/>
+<input type="number" size="30" placeholder="enter phoneno" onChange={this.handleChanges.bind(this,"phoneno")}
+
+value={this.state.fields["phoneno"]}/>
+<span style={{color:"red"}}>{this.state.errors["phoneno"]}</span>
+<br/>
+</fieldset>
+<input type="submit" value="submit"/>
+</div>
+</form>
+</div>
+)
+}}
+export default App;
